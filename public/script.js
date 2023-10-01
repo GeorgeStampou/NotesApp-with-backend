@@ -103,7 +103,6 @@ function createLiNote(id, name){
     editBtn.setAttribute("title", "Edit");
     editBtn.setAttribute("data-id", id)
     editBtn.innerHTML = "<img src='./icons/editIcon.ico' alt='edit icon'>";
-    editBtn.addEventListener("click", editItem);
     newDiv.appendChild(editBtn);
     
     const deleteBtn = document.createElement("button");
@@ -111,7 +110,6 @@ function createLiNote(id, name){
     deleteBtn.setAttribute("title", "Delete");
     deleteBtn.setAttribute("data-id", id);
     deleteBtn.innerHTML = "<img src='./icons/removeIcon.ico' alt='remove icon' >";
-    //deleteBtn.addEventListener("click", removeItem);
 
     newDiv.appendChild(deleteBtn);
     return outli;
