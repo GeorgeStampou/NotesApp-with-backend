@@ -73,7 +73,7 @@ form.addEventListener("submit", onClick);
 */
 
 function editItem(event){
-
+    
     let item = event.target.parentNode.parentNode.firstChild.innerHTML;
     console.log(item);
     let itemInput = document.createElement("input");
@@ -87,36 +87,16 @@ function editItem(event){
 
 }
 
-/*
-    save the new value which typed at itemInput and by pressing "enter" or click. then calls the function which
-    create li elements with the new value which the user has typed and replace the input type element (children[0])
-    with the new li element.
-*/
-function saveItem(event){
-    let inputValue = event.target.value;
-    if(inputValue.length > 0 && (event.keyCode === 13 || event.type === "click")){
-        let newLi = createLi(inputValue);
-        event.target.parentNode.children[0].replaceWith(newLi);
-    }
-}
-
-/* creates a new li element with the key which triggers the action (calls the function) and value for the text of li.*/
-function createLi(value){
-    let li = document.createElement("li");
-    li.innerText = value;
-    return li;
-
-}
-
-
 function createLiNote(id, name){
-    const outli = createLi("");
+    const outli = document.createElement("li");
+    outli.innerText = "";
 
     const newDiv = document.createElement("div");
     newDiv.setAttribute("class","libtnContainer");
     outli.appendChild(newDiv);
             
-    const newLi = createLi(name);
+    const newLi = document.createElement("li");
+    newLi.innerText = name;
     newDiv.appendChild(newLi);
     const editBtn = document.createElement("button");
     editBtn.setAttribute("class", "btn");
@@ -154,3 +134,44 @@ notesDiv.addEventListener("click", async(e)=>{
    
     else return
 })
+
+notesDiv.addEventListener("click", (e)=>{
+    const event = e.target;
+    const id = event.parentElement.getAttribute("id");
+    if(event.parentElement.getAttribute("title")=== "Edit"){
+        let item = event.parentElement.parentElement.firstChild.innerHTML;
+        let itemInput = document.createElement("input");
+        itemInput.type = "text";
+        itemInput.value = item;
+        itemInput.addEventListener("keypress", saveItem);
+    
+        event.parentElement.parentElement.firstChild.replaceWith(itemInput);
+        itemInput.select();
+    }
+    else return
+})
+
+
+
+/*
+    save the new value which typed at itemInput and by pressing "enter" or click. then calls the function which
+    create li elements with the new value which the user has typed and replace the input type element (children[0])
+    with the new li element.
+*/
+async function saveItem(event){
+    let inputValue = event.target.value;
+    const editbutton = event.target.parentNode.children[1];
+    const id = editbutton.getAttribute("data-id");
+    console.log(id);
+    if(id === ""){
+        console.log("ERROR NO ID");
+    }
+    if(inputValue.length > 0 && event.keyCode === 13){
+        try {
+            await axios.patch(`/api/v1/notes/${id}`, {name: inputValue});
+            showNotes();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
