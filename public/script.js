@@ -2,6 +2,32 @@ const notetxt = document.getElementById("noteText");
 const form = document.getElementById("form");
 const notesLst = document.getElementById("notesList");
 
+async function showNotes(){
+
+    try {
+        const response = await axios.get("/api/v1/notes");
+        const {data} = response;
+        console.log(data);
+        if(data.length < 1){
+            console.log("NO DATA AT DATABASE");
+        }
+        data.forEach(item => {
+            const {_id: id, name} = item;
+            console.log(id, name);
+            let outli = createLiNote(id, name);
+            notesLst.appendChild(outli);
+
+            
+        });
+    } catch (error) {
+        console.log(error);
+    }
+    
+    
+}
+
+showNotes();
+
 /*  handles when the add note button is pressed. creates a new div, which has the li element with the text from the input
     user gave, and the buttons delete and edit. at the end resets the form so the input is empty. 
 */
@@ -9,31 +35,15 @@ function onClick(event){
     
     event.preventDefault();
 
-    const outli = createLi("");
+    const nameInput = notetxt.value;
 
+    try {
+        axios.post("/api/v1/notes", {name: nameInput});
+        showNotes();
+    } catch (error) {
+        console.log(error);
+    }
 
-    const newDiv = document.createElement("div");
-    newDiv.setAttribute("class","libtnContainer");
-    outli.appendChild(newDiv)
-      
-    const newLi = createLi(notetxt.value);
-    newDiv.appendChild(newLi);
-
-    const editBtn = document.createElement("button");
-    editBtn.setAttribute("class", "btn");
-    editBtn.setAttribute("title", "Edit");
-    editBtn.innerHTML = "<img src='./icons/editIcon.ico' alt='edit icon'>";
-    editBtn.addEventListener("click", editItem);
-    newDiv.appendChild(editBtn);
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.setAttribute("class","btn");
-    deleteBtn.setAttribute("title", "Delete");
-    deleteBtn.innerHTML = "<img src='./icons/removeIcon.ico' alt='remove icon' >";
-
-    newDiv.appendChild(deleteBtn).addEventListener("click", removeItem);
-    notesLst.appendChild(outli);
-    
     form.reset();
 }
 
@@ -85,4 +95,32 @@ function createLi(value){
     li.innerText = value;
     return li;
 
+}
+
+
+function createLiNote(id, name){
+    const outli = createLi("");
+
+    const newDiv = document.createElement("div");
+    newDiv.setAttribute("class","libtnContainer");
+    outli.appendChild(newDiv);
+            
+    const newLi = createLi(name);
+    newDiv.appendChild(newLi);
+    const editBtn = document.createElement("button");
+    editBtn.setAttribute("class", "btn");
+    editBtn.setAttribute("title", "Edit");
+    editBtn.setAttribute("data-id", id)
+    editBtn.innerHTML = "<img src='./icons/editIcon.ico' alt='edit icon'>";
+    editBtn.addEventListener("click", editItem);
+    newDiv.appendChild(editBtn);
+    
+    const deleteBtn = document.createElement("button");
+    deleteBtn.setAttribute("class","btn");
+    deleteBtn.setAttribute("title", "Delete");
+    deleteBtn.setAttribute("data-id", id);
+    deleteBtn.innerHTML = "<img src='./icons/removeIcon.ico' alt='remove icon' >";
+
+    newDiv.appendChild(deleteBtn).addEventListener("click", removeItem);
+    return outli;
 }
