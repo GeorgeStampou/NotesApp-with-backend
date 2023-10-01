@@ -11,14 +11,17 @@ async function showNotes(){
         if(data.length < 1){
             console.log("NO DATA AT DATABASE");
         }
+        const allNotesLi = []
         data.forEach(item => {
             const {_id: id, name} = item;
             console.log(id, name);
             let outli = createLiNote(id, name);
-            notesLst.appendChild(outli);
-
+            allNotesLi.push(outli.innerHTML);
+            //notesLst.appendChild(outli);
             
         });
+        notesLst.innerHTML = allNotesLi.join("");
+        //console.log(allNotesLi.join(""));
     } catch (error) {
         console.log(error);
     }
