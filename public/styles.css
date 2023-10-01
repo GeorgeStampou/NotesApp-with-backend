@@ -1,0 +1,113 @@
+*{
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    list-style: none;
+}
+
+body{
+    background-image: url("./icons/notesBackground.jpeg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #f6d193;
+}
+
+.container{
+    background-color: #ca9d4e;
+    width: 40%;
+    /*min-width: 400px;*/
+    height: 40%;
+    /*height: 300px;*/
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 8px;
+    border-style: solid;
+    
+}
+
+.title, h1{
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 1.6rem;
+    font-weight: bold;
+    overflow: auto;
+}
+
+.notes{
+    height: 77%;
+    width: 90%;
+    margin: 0.5% auto 1% auto;
+    background-color: #f7e2bf;
+    border-radius: 8px;
+}
+
+.addNote{
+    text-align: center; 
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    
+}
+
+
+.noteControls{
+    background-color: #f7e2bf;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: thin solid;
+}
+
+#noteText{
+    width: 65%;
+    overflow: auto;
+}
+
+#addBtn{
+    width: 30%;
+    overflow: auto;
+}
+
+ul{
+    list-style-type: none;
+    height: 95%;
+    overflow: auto;
+    padding-right: 5%;
+    padding-left: 5%;
+    padding-top: 2%;
+}
+
+.libtnContainer{
+    display: flex;
+    margin-top: 1%;
+}
+
+.libtnContainer>li, .libtnContainer>input{
+    border: thin solid;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    width: 90%;
+    overflow-x: auto;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    cursor: auto;
+}
+
+.btn{
+    border-radius: 8px;
+    margin-left: 1%;
+    padding: 0;
+    cursor: pointer;
+    background-color: #f7e2bf;
+}
