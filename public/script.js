@@ -1,6 +1,7 @@
 const notetxt = document.getElementById("noteText");
 const form = document.getElementById("form");
 const notesLst = document.getElementById("notesList");
+const notesDiv = document.querySelector(".notes");
 
 async function showNotes(){
 
@@ -54,9 +55,16 @@ form.addEventListener("submit", onClick);
 
 
 /* removes the list item which has div wit the li element and the buttons*/
-function removeItem(){
-    this.parentNode.remove();
-}
+// function removeItem(e){
+//     console.log(e.target);
+//     this.parentNode.remove();
+//     // try {
+//     //     await axios.delete(`/api/v1/notes/${id}`);
+//     //     showNotes();
+//     // } catch (error) {
+//     //     console.log(error);
+//     // }
+// }
 
 
 /*
@@ -123,7 +131,26 @@ function createLiNote(id, name){
     deleteBtn.setAttribute("title", "Delete");
     deleteBtn.setAttribute("data-id", id);
     deleteBtn.innerHTML = "<img src='./icons/removeIcon.ico' alt='remove icon' >";
+    //deleteBtn.addEventListener("click", removeItem);
 
-    newDiv.appendChild(deleteBtn).addEventListener("click", removeItem);
+    newDiv.appendChild(deleteBtn);
     return outli;
 }
+
+
+notesDiv.addEventListener("click", async(e)=>{
+    const event = e.target;
+    const id = event.parentElement.getAttribute("data-id");
+    if(event.parentElement.getAttribute("title") === "Delete"){
+        
+        try {
+            await axios.delete(`/api/v1/notes/${id}`);
+            showNotes();
+        } catch (error) {
+            console.log(error);
+        }
+        console.log("delete done");
+    }
+   
+    else return
+})
