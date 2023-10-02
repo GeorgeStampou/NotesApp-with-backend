@@ -2,6 +2,7 @@ const notetxt = document.getElementById("noteText");
 const form = document.getElementById("form");
 const notesLst = document.getElementById("notesList");
 const notesDiv = document.querySelector(".notes");
+const noNotesDiv = document.querySelector(".no-notes-div");
 
 // load notes from database
 async function showNotes() {
@@ -9,14 +10,15 @@ async function showNotes() {
     try{
         const response = await axios.get("/api/v1/notes");
         const {data} = response;
-        console.log(data);
         if(data.length < 1){
-            console.log("NO DATA AT DATABASE");
+            if(noNotesDiv.classList.contains("inactive")) {
+                noNotesDiv.classList.remove("inactive");
+            }
+            noNotesDiv.innerHTML = '<h3>No notes in list</h3>'
         }
         const allNotesLi = []
         data.forEach(item => {
             const {_id: id, name} = item;
-            console.log(id, name);
             let outli = createLiNote(id, name);
             allNotesLi.push(outli.innerHTML);
             
@@ -40,9 +42,11 @@ async function onClick(event) {
 
     try {
         await axios.post("/api/v1/notes", {name: nameInput});
+        noNotesDiv.classList.add("inactive");
         showNotes();
     } catch (error) {
         console.log(error);
+        alert(error);
     }
 
     form.reset();
@@ -91,7 +95,6 @@ notesDiv.addEventListener("click", async (e) => {
         } catch (error) {
             console.log(error);
         }
-        console.log("delete done");
     }
 })
 
@@ -117,13 +120,11 @@ notesDiv.addEventListener("click", (e) => {
 */
 async function saveItem(event) {
     
-    console.log(event.target.value);
     const inputValue = event.target.value;
     const editbutton = event.target.parentNode.children[1];
     const id = editbutton.getAttribute("data-id");
-    console.log(id);
     if(id === "") {
-        console.log("ERROR NO ID");
+        console.log("ERROR WITH ID");
     }
     if(inputValue.length > 0 && event.keyCode === 13) {
         try {

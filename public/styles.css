@@ -39,6 +39,22 @@ body{
     overflow: auto;
 }
 
+h3{
+    text-align: center;
+}
+
+.no-notes-div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+}
+
+.inactive{
+    display: none;
+}
+
 .notes{
     height: 77%;
     width: 90%;
