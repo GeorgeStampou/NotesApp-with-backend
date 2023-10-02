@@ -3,9 +3,10 @@ const form = document.getElementById("form");
 const notesLst = document.getElementById("notesList");
 const notesDiv = document.querySelector(".notes");
 
-async function showNotes(){
+// load notes from database
+async function showNotes() {
 
-    try {
+    try{
         const response = await axios.get("/api/v1/notes");
         const {data} = response;
         console.log(data);
@@ -18,11 +19,9 @@ async function showNotes(){
             console.log(id, name);
             let outli = createLiNote(id, name);
             allNotesLi.push(outli.innerHTML);
-            //notesLst.appendChild(outli);
             
         });
         notesLst.innerHTML = allNotesLi.join("");
-        //console.log(allNotesLi.join(""));
     } catch (error) {
         console.log(error);
     }
@@ -32,17 +31,15 @@ async function showNotes(){
 
 showNotes();
 
-/*  handles when the add note button is pressed. creates a new div, which has the li element with the text from the input
-    user gave, and the buttons delete and edit. at the end resets the form so the input is empty. 
-*/
-function onClick(event){
+// post the new note to the database and then shows all the notes. triggers on click of button "Add note".
+async function onClick(event) {
     
     event.preventDefault();
 
     const nameInput = notetxt.value;
 
     try {
-        axios.post("/api/v1/notes", {name: nameInput});
+        await axios.post("/api/v1/notes", {name: nameInput});
         showNotes();
     } catch (error) {
         console.log(error);
@@ -54,39 +51,7 @@ function onClick(event){
 form.addEventListener("submit", onClick);
 
 
-/* removes the list item which has div wit the li element and the buttons*/
-// function removeItem(e){
-//     console.log(e.target);
-//     this.parentNode.remove();
-//     // try {
-//     //     await axios.delete(`/api/v1/notes/${id}`);
-//     //     showNotes();
-//     // } catch (error) {
-//     //     console.log(error);
-//     // }
-// }
-
-
-/*
-    saves the initial value to item. then creates a new input which replace the li and add two event listeners
-    for saving the new value. add at the parent parent node the new input element and removes the li.
-*/
-
-function editItem(event){
-    
-    let item = event.target.parentNode.parentNode.firstChild.innerHTML;
-    console.log(item);
-    let itemInput = document.createElement("input");
-    itemInput.type = "text";
-    itemInput.value = item;
-    itemInput.addEventListener("keypress", saveItem);
-    itemInput.addEventListener("click", saveItem);
-    console.log(event.target.parentNode.parentNode.firstChild);
-    event.target.parentNode.parentNode.firstChild.replaceWith(itemInput);
-    itemInput.select();
-
-}
-
+// creates new list element for the note
 function createLiNote(id, name){
     const outli = document.createElement("li");
     outli.innerText = "";
@@ -115,12 +80,11 @@ function createLiNote(id, name){
     return outli;
 }
 
-
-notesDiv.addEventListener("click", async(e)=>{
+// delete from database when delete button is clicked
+notesDiv.addEventListener("click", async (e) => {
     const event = e.target;
     const id = event.parentElement.getAttribute("data-id");
-    if(event.parentElement.getAttribute("title") === "Delete"){
-        
+    if(event.parentElement.getAttribute("title") === "Delete") {
         try {
             await axios.delete(`/api/v1/notes/${id}`);
             showNotes();
@@ -129,16 +93,14 @@ notesDiv.addEventListener("click", async(e)=>{
         }
         console.log("delete done");
     }
-   
-    else return
 })
 
-notesDiv.addEventListener("click", (e)=>{
+// handles the click of edit button. calls saveItem for saving.
+notesDiv.addEventListener("click", (e) => {
     const event = e.target;
-    const id = event.parentElement.getAttribute("id");
-    if(event.parentElement.getAttribute("title")=== "Edit"){
-        let item = event.parentElement.parentElement.firstChild.innerHTML;
-        let itemInput = document.createElement("input");
+    if(event.parentElement.getAttribute("title") === "Edit") {
+        const item = event.parentElement.parentElement.firstChild.innerHTML;
+        const itemInput = document.createElement("input");
         itemInput.type = "text";
         itemInput.value = item;
         itemInput.addEventListener("keypress", saveItem);
@@ -146,27 +108,26 @@ notesDiv.addEventListener("click", (e)=>{
         event.parentElement.parentElement.firstChild.replaceWith(itemInput);
         itemInput.select();
     }
-    else return
 })
 
 
-
 /*
-    save the new value which typed at itemInput and by pressing "enter" or click. then calls the function which
-    create li elements with the new value which the user has typed and replace the input type element (children[0])
-    with the new li element.
+    saves the new value which typed at itemInput and by pressing "enter". then with the id of the notes replaces with the new value
+    and calls the showNotes.
 */
-async function saveItem(event){
-    let inputValue = event.target.value;
+async function saveItem(event) {
+    
+    console.log(event.target.value);
+    const inputValue = event.target.value;
     const editbutton = event.target.parentNode.children[1];
     const id = editbutton.getAttribute("data-id");
     console.log(id);
-    if(id === ""){
+    if(id === "") {
         console.log("ERROR NO ID");
     }
-    if(inputValue.length > 0 && event.keyCode === 13){
+    if(inputValue.length > 0 && event.keyCode === 13) {
         try {
-            await axios.patch(`/api/v1/notes/${id}`, {name: inputValue});
+            await axios.patch(`/api/v1/notes/${id}`, { name: inputValue });
             showNotes();
         } catch (error) {
             console.log(error);
