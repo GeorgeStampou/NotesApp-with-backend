@@ -88,6 +88,9 @@ function createLiNote(id, name){
 notesDiv.addEventListener("click", async (e) => {
     const event = e.target;
     const id = event.parentElement.getAttribute("data-id");
+    if(id === "") {
+        console.log("ERROR WITH ID");
+    }
     if(event.parentElement.getAttribute("title") === "Delete") {
         try {
             await axios.delete(`/api/v1/notes/${id}`);
