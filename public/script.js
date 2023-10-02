@@ -20,15 +20,12 @@ async function showNotes() {
         data.forEach(item => {
             const {_id: id, name} = item;
             let outli = createLiNote(id, name);
-            allNotesLi.push(outli.innerHTML);
-            
+            allNotesLi.push(outli.innerHTML);       
         });
         notesLst.innerHTML = allNotesLi.join("");
     } catch (error) {
         console.log(error);
-    }
-    
-    
+    }   
 }
 
 showNotes();
@@ -37,9 +34,7 @@ showNotes();
 async function onClick(event) {
     
     event.preventDefault();
-
     const nameInput = notetxt.value;
-
     try {
         await axios.post("/api/v1/notes", {name: nameInput});
         noNotesDiv.classList.add("inactive");
@@ -110,7 +105,6 @@ notesDiv.addEventListener("click", (e) => {
         itemInput.type = "text";
         itemInput.value = item;
         itemInput.addEventListener("keypress", saveItem);
-    
         event.parentElement.parentElement.firstChild.replaceWith(itemInput);
         itemInput.select();
     }
@@ -122,7 +116,6 @@ notesDiv.addEventListener("click", (e) => {
     and calls the showNotes.
 */
 async function saveItem(event) {
-    
     const inputValue = event.target.value;
     const editbutton = event.target.parentNode.children[1];
     const id = editbutton.getAttribute("data-id");
