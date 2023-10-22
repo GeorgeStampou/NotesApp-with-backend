@@ -1,6 +1,6 @@
 # NotesApp-with-backend
 
-The **NotesApp-with-Backend** is a Node.js API that allows you to create, read, update, and delete notes. It's built using Express.js and MongoDB. The frontend is from another project i made: [Notes App](https://github.com/GeorgeStampou/NotesApp). All the notes are now saved at a database.
+The **NotesApp-with-Backend** is a Node.js app that allows you to create, read, update, and delete notes. It's built using Express.js and MongoDB. The frontend is from another project i made: [Notes App](https://github.com/GeorgeStampou/NotesApp). All the notes are now saved at a database.
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
