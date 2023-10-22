@@ -43,8 +43,4 @@ To use the NotesApp-with-Backend locally, follow these steps:
    ```bash
    node app.js
 2. The app will be available at `http://localhost:whatever port you add at the .env file` when you see a message at your command window like: `Server is listening on port port_number...`
-3. You'll see a simple interface with a "Notes App" title.
-4. To add a new note, type your note in the input field.
-5. Click the "Add note" button, and your note will appear in the list of notes.
-6. To edit a note, simply click on the edit button next to note field (marker icon), make your changes, and press Enter to save.
-7. To delete a note, click the delete button (bin icon).
+3. You can interact with the app. Add new notes, edit, remove. All of your notes are kept at your database.
